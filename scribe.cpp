@@ -174,10 +174,10 @@ std::map<std::string, std::string> get_config() {
     // Generate Scribe Config File and populate config if not already created.
     std::ofstream config_file;
     config_file.open(scribe_dir);
-    config_file << "SCRIBEFILE=" << std::getenv("HOME") << "/scribe.txt";
-    config_file << "ARCHIVEFILE=" << std::getenv("HOME") << "/scribe.arc.txt"; 
+    config_file << "SCRIBEFILE=" << std::getenv("HOME") << "/scribe.txt" << std::endl;
+    config_file << "ARCHIVEFILE=" << std::getenv("HOME") << "/scribe.arc.txt" <<std::endl; 
     config_file.close();
-    std::cout << "Generated your scribefile for you at ~/.scribe" << std::endl;
+    std::cout << "Generated your scribe configuration file for you at ~/.scribe" << std::endl;
   }
 
   return config;
@@ -191,7 +191,10 @@ void command(std::string command, std::string flag, std::string parameter) {
   std::map<std::string, std::string> config = get_config();
   ScribeFile sf (config);
 
-  if (command.compare("help") == 0) {
+  if (command.empty()) {
+    std::cout << "Scribe -- Your lovable personal assistant. v0.1.0" << std::endl;
+  }
+  else if (command.compare("help") == 0) {
     std::cout << "Scribe -- Your lovable personal assistant.\n" << std::endl;
     std::cout << "Usage:" << std::endl;
     std::cout << "\tscribe add TODO\t\t - Creates TODO as a new todo item." << std::endl;
@@ -289,12 +292,7 @@ void command(std::string command, std::string flag, std::string parameter) {
 
 int main(int argc, const char * argv[]) {
   // Parse and Deliver Commands
-   
-  if (argc <= 1) {
-    std::cout << "Scribe -- Your lovable personal assistant." << std::endl;
-    return 0;
-  }
-
+  
   std::string arg;
   std::string mycommand, flag, parameter;
   bool command_found = false;
